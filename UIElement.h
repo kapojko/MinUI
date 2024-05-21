@@ -7,6 +7,7 @@
 #define MAX_UI_TEXT_LENGTH 20
 
 #define UI_ELEMENT_FLAG_CENTERED 0b1
+#define UI_ELEMENT_FLAG_RIGHT 0b10
 
 enum UIElementType {
     UI_ELEMENT_TYPE_TEXT,

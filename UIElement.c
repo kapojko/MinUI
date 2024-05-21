@@ -10,12 +10,19 @@ static void paintTextUIElement(struct UIElement *e) {
     short outputWidth = e->width;
     int textWidth;
 
-    // For centered text calculate width
+    // For centered or right-aligned text calculate width
     if (e->flags & UI_ELEMENT_FLAG_CENTERED) {
         textWidth = GetStringWidth(e->x, e->y, e->width, e->height, e->text.text);
 
         if (textWidth > 0 && textWidth < e->width) {
             outputX = e->x + (e->width - textWidth) / 2;
+            outputWidth = textWidth;
+        }
+    } else if (e->flags & UI_ELEMENT_FLAG_RIGHT) {
+        textWidth = GetStringWidth(e->x, e->y, e->width, e->height, e->text.text);
+
+        if (textWidth > 0 && textWidth < e->width) {
+            outputX = e->x + e->width - textWidth;
             outputWidth = textWidth;
         }
     }
