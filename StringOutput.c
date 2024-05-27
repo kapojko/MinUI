@@ -34,9 +34,10 @@ static int processString(int x, int y, int width, int height, const char *str, b
     int curX = x;
     int curWidth = 0;
     long curCodepoint;
-    for (const char *next = str; next; next = ReadUtf8Character(next, &curCodepoint)) {
+    unsigned long curCodepointUtf8;
+    for (const char *next = str; next; next = ReadUtf8Character(next, &curCodepoint, &curCodepointUtf8)) {
         // Get font image for the current character
-        const tImage *image = GetCharImage(font, curCodepoint);
+        const tImage *image = GetCharImage(font, curCodepointUtf8);
         if (!image) {
             continue;
         }
