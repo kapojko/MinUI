@@ -27,7 +27,7 @@ static int processString(int x, int y, int width, int height, const char *str, b
     // select font based on height
     const tFont *font = GetFontForHeight(height);
     if (!font) {
-        minuiPlatform->DebugPrint("Unsupported height: %d, failed to select font\r\n", height);
+        minuiPlatform->debugPrint("Unsupported height: %d, failed to select font\r\n", height);
         return -1;
     }
 
@@ -37,8 +37,9 @@ static int processString(int x, int y, int width, int height, const char *str, b
     unsigned long curCodepointUtf8;
     for (const char *next = str; next; next = ReadUtf8Character(next, &curCodepoint, &curCodepointUtf8)) {
         // Get font image for the current character
-        const tImage *image = GetCharImage(font, curCodepointUtf8);
+        const tImage *image = GetCharImage(font, (long)curCodepointUtf8);
         if (!image) {
+            minuiPlatform->debugPrint("Unsupported codepoint: %llx\r\n", curCodepointUtf8);
             continue;
         }
 
@@ -51,9 +52,9 @@ static int processString(int x, int y, int width, int height, const char *str, b
             // Output image
             // NOTE: font image is already prepared for direct output
             int dataSize = calcImageDataSize(image);
-            bool ok = minuiPlatform->OutputPreparedBitmap(curX, y, image->width, image->height, image->data, dataSize);
+            bool ok = minuiPlatform->outputPreparedBitmap(curX, y, image->width, image->height, image->data, dataSize);
             if (!ok) {
-                minuiPlatform->DebugPrint("Failed to output character image\r\n");
+                minuiPlatform->debugPrint("Failed to output character image\r\n");
                 return -1;
             }
         }

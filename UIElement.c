@@ -29,9 +29,9 @@ static void paintTextUIElement(struct UIElement *e) {
 
     // Fill area on the left
     if (outputX > e->x) {
-        ok = minuiPlatform->FillArea(e->x, e->y, outputX - e->x, e->height, minuiPlatform->bgValue);
+        ok = minuiPlatform->fillArea(e->x, e->y, outputX - e->x, e->height, minuiPlatform->bgValue);
         if (!ok) {
-            minuiPlatform->DebugPrint("FillArea failed\r\n");
+            minuiPlatform->debugPrint("fillArea failed\r\n");
             return;
         }
     }
@@ -45,9 +45,9 @@ static void paintTextUIElement(struct UIElement *e) {
 
     // Fill area on the right
     if (outputX + textWidth < e->x + e->width) {
-        ok = minuiPlatform->FillArea(outputX + textWidth, e->y, e->x + e->width - outputX - textWidth, e->height, minuiPlatform->bgValue);
+        ok = minuiPlatform->fillArea(outputX + textWidth, e->y, e->x + e->width - outputX - textWidth, e->height, minuiPlatform->bgValue);
         if (!ok) {
-            minuiPlatform->DebugPrint("FillArea failed\r\n");
+            minuiPlatform->debugPrint("fillArea failed\r\n");
             return;
         }
     }
@@ -58,25 +58,25 @@ static void paintBitmapUIElement(struct UIElement *e) {
     
     if (e->bitmap.image == NULL) {
         // Just fill the area
-        ok = minuiPlatform->FillArea(e->x, e->y, e->width, e->height, minuiPlatform->bgValue);
+        ok = minuiPlatform->fillArea(e->x, e->y, e->width, e->height, minuiPlatform->bgValue);
         if (!ok) {
-            minuiPlatform->DebugPrint("FillArea failed\r\n");
+            minuiPlatform->debugPrint("fillArea failed\r\n");
         }
         return;
     }
 
     // Output bitmap
     int dataSize = e->bitmap.image->width * e->bitmap.image->height / e->bitmap.image->dataSize;
-    ok = minuiPlatform->OutputPreparedBitmap(e->x, e->y, e->width, e->height, e->bitmap.image->data, dataSize);
+    ok = minuiPlatform->outputPreparedBitmap(e->x, e->y, e->width, e->height, e->bitmap.image->data, dataSize);
     if (!ok) {
-        minuiPlatform->DebugPrint("OutputPreparedBitmap failed\r\n");
+        minuiPlatform->debugPrint("outputPreparedBitmap failed\r\n");
     }
 }
 
 static void paintFillUIElement(struct UIElement *e) {
-    bool ok = minuiPlatform->FillArea(e->x, e->y, e->width, e->height, e->fill.value);
+    bool ok = minuiPlatform->fillArea(e->x, e->y, e->width, e->height, e->fill.value);
     if (!ok) {
-        minuiPlatform->DebugPrint("FillArea failed\r\n");
+        minuiPlatform->debugPrint("fillArea failed\r\n");
     }
 }
 

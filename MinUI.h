@@ -17,9 +17,9 @@ typedef bool (*FillAreaFunc)(int x, int y, int width, int height, int value);
 typedef void (*DebugPrintFunc)(const char *fmt, ...);
 
 struct MinUIPlatform {
-    OutputPreparedBitmapFunc OutputPreparedBitmap;
-    FillAreaFunc FillArea;
-    DebugPrintFunc DebugPrint;
+    OutputPreparedBitmapFunc outputPreparedBitmap;
+    FillAreaFunc fillArea;
+    DebugPrintFunc debugPrint;
 
     const struct FontData *fontData[MAX_FONTS + 1];
     enum ImageDataLayout imageDataLayout;
