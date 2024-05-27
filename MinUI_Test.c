@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include "MinUnit.h"
 #include "UIView.h"
+#include "Utf8.h"
 
 int tests_run = 0;
 
 static const char *RunAllTests(void) {
     mu_run_test(UIView_UnitTest);
+    mu_run_test(Utf8_UnitTest);
     return 0;
 }
 
