@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "uiview.h": "c",
+        "utf8.h": "c",
+        "minunit.h": "c"
+    }
+}
