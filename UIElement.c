@@ -66,7 +66,7 @@ static void paintBitmapUIElement(struct UIElement *e) {
     }
 
     // Output bitmap
-    int dataSize = e->bitmap.image->width * e->bitmap.image->height / e->bitmap.image->dataSize;
+    int dataSize = CalcImageDataSize(e->bitmap.image);
     ok = minuiPlatform->outputPreparedBitmap(e->x, e->y, e->width, e->height, e->bitmap.image->data, dataSize);
     if (!ok) {
         minuiPlatform->debugPrint("outputPreparedBitmap failed\r\n");

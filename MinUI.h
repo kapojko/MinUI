@@ -30,4 +30,6 @@ extern struct MinUIPlatform *minuiPlatform;
 
 void InitMinUI(struct MinUIPlatform *platform);
 
+int CalcImageDataSize(const tImage *image);
+
 #endif // MINUI_H
