@@ -23,7 +23,7 @@ static int processString(int x, int y, int width, int height, const char *str, b
         unsigned long curCodepointUtf8;
         next = ReadUtf8Character(next, &curCodepoint, &curCodepointUtf8);
 
-        if (!next || !*next) {
+        if (!next) {
             break;
         }
 
