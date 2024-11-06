@@ -9,7 +9,8 @@ static int getMenuItemCount(struct Menu *menu) {
 }
 
 void InitMenu(struct Menu *menu, const struct MenuItem(*items)[],
-        short x, short y, short width, short height, short lineHeight, short lrMargin) {
+        short x, short y, short width, short height, short lineHeight, short lrMargin,
+        int flags) {
     // setup menu items
     menu->items = items;
     menu->itemCount = getMenuItemCount(menu);
@@ -30,15 +31,24 @@ void InitMenu(struct Menu *menu, const struct MenuItem(*items)[],
     menu->lineHeight = lineHeight;
     menu->lrMargin = lrMargin;
 
+    // setup flags
+    menu->flags = flags;
+
     // init display elements
     for (int i = 0; i < menu->displayCount; i++) {
+        int cursorWidth = menu->lineHeight;
+
+        if (menu->flags & MENU_NARROW_CURSOR) {
+            cursorWidth /= 2;
+        }
+
         InitUIElement(&menu->cursorElement[i], UI_ELEMENT_TYPE_TEXT,
                 menu->lrMargin, i * menu->lineHeight,
-                menu->lineHeight, menu->lineHeight,
+                cursorWidth, menu->lineHeight,
                 0);
         InitUIElement(&menu->itemElement[i], UI_ELEMENT_TYPE_TEXT,
-                menu->lrMargin + menu->lineHeight, i * menu->lineHeight,
-                menu->width - 2 * menu->lrMargin - menu->lineHeight, menu->lineHeight,
+                menu->lrMargin + cursorWidth, i * menu->lineHeight,
+                menu->width - 2 * menu->lrMargin - cursorWidth, menu->lineHeight,
                 0);
     }
 
@@ -67,6 +77,10 @@ void PrepareMenu(struct Menu *menu) {
     menu->selectedItem = 0;
     menu->displayOffset = 0;
 
+    PrepareMenuRepaintOnly(menu);
+}
+
+void PrepareMenuRepaintOnly(struct Menu *menu) {
     for (int i = 0; i < menu->displayCount; i++) {
         menu->cursorElement[i].painted = false;
         menu->itemElement[i].painted = false;
@@ -96,6 +110,8 @@ int ProcessMenuInput(struct Menu *menu, enum MenuInput input) {
             if (menu->selectedItem < menu->displayOffset) {
                 menu->displayOffset = menu->selectedItem;
             }
+        } else if (menu->flags & MENU_EXIT_AFTER_SCROLL) {
+            action = MENU_EXIT_ACTION;
         }
         break;
     case MENU_INPUT_DOWN:
@@ -105,6 +121,8 @@ int ProcessMenuInput(struct Menu *menu, enum MenuInput input) {
             if (menu->selectedItem >= menu->displayOffset + menu->displayCount) {
                 menu->displayOffset = menu->selectedItem - menu->displayCount + 1;
             }
+        } else if (menu->flags & MENU_EXIT_AFTER_SCROLL) {
+            action = MENU_EXIT_ACTION;
         }
         break;
     case MENU_INPUT_ENTER:

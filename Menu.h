@@ -5,6 +5,12 @@
 
 #define MAX_MENU_DISPLAY_ITEMS 4
 
+// Menu flags
+#define MENU_EXIT_AFTER_SCROLL 0b1
+#define MENU_NARROW_CURSOR 0b10
+
+#define MENU_EXIT_ACTION 9000
+
 struct MenuItem {
     int action;
     char text[MAX_UI_TEXT_LENGTH];
@@ -27,6 +33,8 @@ struct Menu {
     short lineHeight;
     short lrMargin;
 
+    int flags;
+
     struct UIElement cursorElement[MAX_MENU_DISPLAY_ITEMS];
     struct UIElement itemElement[MAX_MENU_DISPLAY_ITEMS];
     struct UIElement bottomFillElement;
@@ -43,9 +51,12 @@ enum MenuInput {
 };
 
 void InitMenu(struct Menu *menu, const struct MenuItem(*items)[],
-    short x, short y, short width, short height, short lineHeight, short lrMargin);
+    short x, short y, short width, short height, short lineHeight, short lrMargin,
+    int flags);
 
 void PrepareMenu(struct Menu *menu);
+void PrepareMenuRepaintOnly(struct Menu *menu);
+
 int ProcessMenuInput(struct Menu *menu, enum MenuInput input);
 void UpdateMenu(struct Menu *menu);
 
